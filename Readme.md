@@ -13,7 +13,6 @@ This Quiz App provides a RESTful API for creating, managing, and answering quizz
 ``` 
 git clone https://github.com/om-2551/quiz-o-mania.git 
 
-cd quiz-o-mania
 ```
 
 2. **install dependencies** 

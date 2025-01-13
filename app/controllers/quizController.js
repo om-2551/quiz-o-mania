@@ -4,7 +4,7 @@ const quizSchema = require('../schemas/quizValidator')
 const answerSchema = require('../schemas/answerValidator');
 
 // Controller to create a new quiz
-exports.createQuiz = async (req, res) => {
+const createQuiz = async (req, res) => {
   try {
     // Validate the incoming quiz data
     const { error } = quizSchema.validate(req.body); 
@@ -26,7 +26,7 @@ exports.createQuiz = async (req, res) => {
 };
 
 // Controller to get a quiz by its ID
-exports.getQuizById = async (req, res) => {
+const getQuizById = async (req, res) => {
   try {
     // Find the quiz by its ID
     const quiz = quizzes.find(q => q.id == req.params.id);
@@ -49,7 +49,7 @@ exports.getQuizById = async (req, res) => {
 };
 
 // Controller to submit an answer to a quiz question
-exports.submitAnswer = async (req, res) => {
+const submitAnswer = async (req, res) => {
   try {
     const { error } = answerSchema.validate(req.body); 
     if (error) return res.status(400).send(error.details[0].message);
@@ -82,7 +82,7 @@ exports.submitAnswer = async (req, res) => {
 };
 
 // Controller to get the results of a quiz
-exports.getResults = async (req, res) => {
+const getResults = async (req, res) => {
   try {
     const quiz = quizzes.find(q => q.id == req.params.id);
     if (!quiz) return res.status(404).send('Quiz not found');
@@ -100,4 +100,11 @@ exports.getResults = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 
+};
+
+module.exports = {
+  createQuiz,
+  getQuizById,
+  submitAnswer,
+  getResults
 };
