@@ -40,8 +40,9 @@ The server will start on http://localhost:3000.
 
 #### Create Quiz
 ```
-POST /api/quizzes
-{
+curl --location 'http://localhost:3000/api/quizzes' \
+--header 'Content-Type: application/json' \
+--data '{
    "id": 1,
    "title": "Introduction to Generative AI",
    "questions": [
@@ -54,7 +55,7 @@ POST /api/quizzes
             "To classify images", 
             "To sort emails"
             ],
-         "correct_option": 1
+         "correct_option": 3
       },
       {
          "id": 2,
@@ -68,27 +69,30 @@ POST /api/quizzes
       "correct_option": 1
       }
    ]
-}
+}'
 ```
 
 #### Get Quiz
 ```
-GET /api/quizzes/1
+curl --location 'http://localhost:3000/api/quizzes/1'
 ```
 
 #### Submit Answer
 ```
-POST /api/quizzes/1/answer
-{
+curl --location 'http://localhost:3000/api/quizzes/1/answer' \
+--header 'Content-Type: application/json' \
+--data '{
+  "user_id": 1,
   "question_id": 1,
-  "selected_option": 2
+  "selected_option": 3
 }
+'
 ```
 
 
 #### Get Results
 ```
-GET /api/quizzes/1/results
+curl --location 'http://localhost:3000/api/quizzes/1/results/1'
 ```
 
 

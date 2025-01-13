@@ -1,5 +1,6 @@
 const { quizzes } = require('../models/quiz');
 const { answers } = require('../models/answer');
+const { results } = require('../models/result');
 const quizSchema = require('../schemas/quizValidator')
 const answerSchema = require('../schemas/answerValidator');
 
@@ -59,6 +60,9 @@ const submitAnswer = async (req, res) => {
     
     const question = quiz.questions.find(q => q.id == req.body.question_id);
     if (!question) return res.status(404).send('Question not found');
+
+    const user_id = req.body.user_id;
+    if (!user_id) return res.status(404).send('User ID is required');
     
     // Determine if the submitted answer is correct
     const isCorrect = question.correct_option === req.body.selected_option;
@@ -67,10 +71,24 @@ const submitAnswer = async (req, res) => {
       selected_option: req.body.selected_option,
       is_correct: isCorrect,
     };
-
     // Add the submitted answer to the list of answers
     answers.push(answer);
+  
+    // Find or create the user's answers for the quiz
+    let userAnswers = results.find(result => result.quiz_id == quiz.id && result.user_id == req.body.user_id);
+    if (!userAnswers) { 
+      userAnswers = {
+        quiz_id: quiz.id,
+        user_id: user_id,
+        score: 0,
+        answers: []
+      };
+      results.push(userAnswers);
+    }
 
+    // Add the submitted answer to the user's answers and update the score
+    userAnswers.answers.push(answer);
+    userAnswers.score = userAnswers.answers.filter(a => a.is_correct).length;
     res.status(200).json({
       is_correct: isCorrect,
       correct_option: isCorrect ? null : question.correct_option,
@@ -87,14 +105,25 @@ const getResults = async (req, res) => {
     const quiz = quizzes.find(q => q.id == req.params.id);
     if (!quiz) return res.status(404).send('Quiz not found');
     
+    const user_id = req.params.user_id;
+    if (!user_id) return res.status(404).send('User ID is required');
+
     // Retrieve the user's answers for the quiz
-    const userAnswers = answers.filter(a => quiz.questions.some(q => q.id === a.question_id));
-    const score = userAnswers.filter(a => a.is_correct).length;
-    
+    const userResults = results.find(result => result.quiz_id == quiz.id && result.user_id == req.params.user_id);
+    if (!userResults) return res.status(404).send('Results not found for this user and quiz');
+
+    // Calculate the user's score
+    const score = userResults.answers.filter(answer => answer.is_correct).length;
+
     res.status(200).json({
-      quiz_id: quiz.id,
+      quiz_id: req.params.id,
+      user_id: req.params.user_id,
       score: score,
-      answers: userAnswers,
+      answers: userResults.answers.map(answer =>
+        ({ question_id: answer.question_id,
+          selected_option: answer.selected_option,
+          is_correct: answer.is_correct
+        }))
     });
   } catch (error) {
     res.status(500).send('Internal Server Error');
