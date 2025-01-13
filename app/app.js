@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const quizRoutes = require('./routes/route');
 
 const app = express();
-const port = 3001;
+const port = 3000;
 
 app.use(bodyParser.json());
 app.use(express.json());

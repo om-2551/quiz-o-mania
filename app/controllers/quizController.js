@@ -3,16 +3,20 @@ const { answers } = require('../models/answer');
 const quizSchema = require('../schemas/quizValidator')
 const answerSchema = require('../schemas/answerValidator');
 
+// Controller to create a new quiz
 exports.createQuiz = async (req, res) => {
   try {
+    // Validate the incoming quiz data
     const { error } = quizSchema.validate(req.body); 
     if (error) return res.status(400).send(error.details[0].message);
   
+    // Create a new quiz object
     const quiz = {
       id: quizzes.length + 1,
       title: req.body.title,
       questions: req.body.questions,
     };
+    // Add the new quiz to the list of quizzes
     quizzes.push(quiz);
     res.status(201).json(quiz);
   } catch (error) {
@@ -21,8 +25,10 @@ exports.createQuiz = async (req, res) => {
 
 };
 
+// Controller to get a quiz by its ID
 exports.getQuizById = async (req, res) => {
   try {
+    // Find the quiz by its ID
     const quiz = quizzes.find(q => q.id == req.params.id);
     if (!quiz) return res.status(404).send('Quiz not found');
   
@@ -42,6 +48,7 @@ exports.getQuizById = async (req, res) => {
 
 };
 
+// Controller to submit an answer to a quiz question
 exports.submitAnswer = async (req, res) => {
   try {
     const { error } = answerSchema.validate(req.body); 
@@ -53,12 +60,15 @@ exports.submitAnswer = async (req, res) => {
     const question = quiz.questions.find(q => q.id == req.body.question_id);
     if (!question) return res.status(404).send('Question not found');
     
+    // Determine if the submitted answer is correct
     const isCorrect = question.correct_option === req.body.selected_option;
     const answer = {
       question_id: req.body.question_id,
       selected_option: req.body.selected_option,
       is_correct: isCorrect,
     };
+
+    // Add the submitted answer to the list of answers
     answers.push(answer);
 
     res.status(200).json({
@@ -71,11 +81,13 @@ exports.submitAnswer = async (req, res) => {
   
 };
 
+// Controller to get the results of a quiz
 exports.getResults = async (req, res) => {
   try {
     const quiz = quizzes.find(q => q.id == req.params.id);
     if (!quiz) return res.status(404).send('Quiz not found');
     
+    // Retrieve the user's answers for the quiz
     const userAnswers = answers.filter(a => quiz.questions.some(q => q.id === a.question_id));
     const score = userAnswers.filter(a => a.is_correct).length;
     
