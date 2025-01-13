@@ -11,7 +11,7 @@ This Quiz App provides a RESTful API for creating, managing, and answering quizz
 ### Steps to Set Up and Run the Service 
 1. **Clone the repository** 
 ``` 
-git clone https://github.com/om-2551/quiz-o-mania.git 
+git clone https://github.com/patelpavan2419/quiz-o-mania.git
 
 ```
 
