@@ -32,10 +32,10 @@ The server will start on http://localhost:3000.
 - **Create Quiz**: `POST /api/quizzes`
 - **Get Quiz**: `GET /api/quizzes/:id`
 - **Submit Answer**: `POST /api/quizzes/:id/answer`
-- **Get Results**: `GET /api/quizzes/:id/results`
+- **Get Results**: `GET /api/quizzes/:id/results/:user_id`
 
 
-## To test the API endpoints, you can use Postman. Here's how you can test each endpoint:
+## To test the API endpoints, you can use Postman or curl command. Here's how you can test each endpoint:
 ### Example Requests
 
 #### Create Quiz
