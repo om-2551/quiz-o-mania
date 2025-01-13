@@ -11,16 +11,20 @@ This Quiz App provides a RESTful API for creating, managing, and answering quizz
 ### Steps to Set Up and Run the Service 
 1. **Clone the repository** 
 ``` 
-git clone https://github.com/your-username/quiz-app.git 
+git clone https://github.com/om-2551/quiz-o-mania.git 
 
 cd quiz-o-mania
 ```
 
 2. **install dependencies** 
+```
 npm install
+```
 
 3. **Start the server**
+```
 npm start
+```
 
 The server will start on http://localhost:3000.
 

@@ -1,0 +1,28 @@
+{
+  "name": "quiz-o-mania",
+  "version": "1.0.0",
+  "main": "app/app.js",
+  "scripts": {
+    "start": "nodemon app/app.js",
+    "test:unit": "mocha --timeout 5000 'tests/quiz-test.js'",
+    "test:integration": "mocha --timeout 5000 'tests/quiz-inegration-test.js'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "joi": "^17.13.3"
+  },
+  "devDependencies": {
+    "chai": "4.3.4",
+    "chai-http": "4.3.0",
+    "expect.js": "^0.3.1",
+    "mocha": "^11.0.1",
+    "mock-req-res": "^1.2.1",
+    "nodemon": "^3.1.9",
+    "sinon": "^19.0.2"
+  }
+}
